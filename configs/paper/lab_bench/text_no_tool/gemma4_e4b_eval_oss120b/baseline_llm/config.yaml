@@ -1,0 +1,51 @@
+max_rounds: 1
+name: lab-bench-baseline_llm
+environment:
+  env_type: task-single-llm-benchmark
+  max_rounds: 1
+  rule:
+    reviewer_feedback_mode: plain
+    evaluator:
+      type: llm
+      data_name: lab-bench
+      generic_failure_hint: The selected option was judged incorrect. Re-check the question wording, the in-prompt evidence,
+        and the option-letter mapping. Do not repeat a rejected letter unless the previous issue was only formatting.
+agents:
+- agent_type: solver
+  name: Solo
+  role_description: Text-only LAB-Bench multiple-choice solver
+  prepend_prompt_template:
+    prompt_ref: solver_prepend_prompt
+  append_prompt_template:
+    prompt_ref: solver_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: google/gemma-4-E4B-it
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+- agent_type: evaluator
+  name: Evaluator
+  role_description: Constrained LAB-Bench multiple-choice evaluator
+  prepend_prompt_template:
+    prompt_ref: evaluator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: evaluator_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm-evaluator
+    dimensions:
+    - Correctness
+prompt_preset:
+  path: configs/paper/prompt_presets/lab_bench_mc/baseline_llm.yaml

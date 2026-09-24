@@ -1,0 +1,57 @@
+max_rounds: 3
+name: science-qa-single_agent_hint_llm
+environment:
+  env_type: task-single-agent-reflect
+  max_rounds: 3
+  rule:
+    reset_solver_memory_each_attempt: true
+    reviewer_feedback_mode: hint
+    evaluator:
+      type: llm
+      data_name: science-qa
+      generic_failure_hint: The submitted answer was judged incorrect. Re-check the requested answer format, the option-letter
+        mapping if choices are present, numeric units if relevant, and the scientific reasoning. Do not repeat a rejected
+        answer unless the prior issue was only formatting.
+agents:
+- agent_type: solver
+  name: Solo
+  role_description: LLM-only scientific reasoning solver
+  first_attempt_prepend_prompt_template:
+    prompt_ref: first_attempt_prepend_prompt
+  first_attempt_append_prompt_template:
+    prompt_ref: first_attempt_append_prompt
+  prepend_prompt_template:
+    prompt_ref: retry_prepend_prompt
+  append_prompt_template:
+    prompt_ref: retry_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: google/gemma-4-31B-it
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+- agent_type: evaluator
+  name: Evaluator
+  role_description: Constrained scientific-answer evaluator
+  prepend_prompt_template:
+    prompt_ref: evaluator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: evaluator_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm-evaluator
+    dimensions:
+    - Correctness
+prompt_preset:
+  path: configs/paper/prompt_presets/science_qa/single_agent_hint_llm.yaml

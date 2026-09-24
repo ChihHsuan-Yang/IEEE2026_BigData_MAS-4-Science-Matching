@@ -1,0 +1,65 @@
+metadata:
+  domain: science_qa
+  answer_contract: boxed scientific answer
+prompts:
+  first_attempt_prepend_prompt: |-
+    You are answering a scientific reasoning benchmark question as a text-only LLM.
+
+    Task:
+    ${task_description}
+
+    Instructions:
+    - Solve using the information in the prompt and your scientific knowledge.
+    - Do not assume access to external tools, databases, calculators, images, or hidden tables.
+    - Follow the requested answer format in the problem.
+    - If options are listed, answer with the option letter(s), e.g. \boxed{A} or \boxed{ABD}.
+    - For matching questions with listed options, answer with the option letter(s), not the full mapping text.
+    - If a numeric, symbolic, or short textual answer is requested, answer with that value, including units when appropriate.
+    - Your final line must contain exactly one boxed final answer.
+    - Do not put any text after the boxed final answer.
+  first_attempt_append_prompt: |-
+    End with exactly one final line:
+    \boxed{<answer>}
+  retry_prepend_prompt: |-
+    You are retrying the same scientific reasoning question after evaluator feedback.
+
+    Task:
+    ${task_description}
+
+    Question-scoped failed-attempt memory and feedback:
+    ${advice}
+
+    Instructions:
+    - Use the memory only to avoid repeating rejected answers and to incorporate evaluator feedback.
+    - Re-check the requested answer format, option-letter mapping, units, and scientific reasoning.
+    - For matching questions with listed options, answer with the option letter(s), not the full mapping text.
+    - Your final line must contain exactly one boxed final answer.
+    - Do not put any text after the boxed final answer.
+  retry_append_prompt: |-
+    End with exactly one final line:
+    \boxed{<answer>}
+  evaluator_prepend_prompt: |-
+    You are a constrained evaluator for a scientific reasoning benchmark.
+
+    Task shown to the solver:
+    ${task_description}
+
+    Solver final submission:
+    ${solution}
+
+    Ground truth / evaluator-only reference material:
+    ${result}
+
+    Evaluation rules:
+    - Do not solve the task from scratch on behalf of the protocol.
+    - Compare the submitted final answer with the evaluator-only reference.
+    - For multiple-choice and matching tasks with listed options, accept equivalent option-letter answers, including multi-letter or comma-separated answers when they preserve the same option set.
+    - For numeric or unit-bearing tasks, accept mathematically equivalent answers with compatible units and reasonable formatting.
+    - If the evaluator-only reference is a numeric range such as "a to b", accept answers that fall inside that range.
+    - For short-answer tasks, accept unambiguous semantic equivalence.
+    - If incorrect, give only a short non-answer-revealing hint. Do not reveal the correct answer.
+  evaluator_append_prompt: |-
+    Output format:
+    Verdict: PASS or FAIL
+    Correctness: 0 or 1
+    Response: <brief non-answer-revealing hint>

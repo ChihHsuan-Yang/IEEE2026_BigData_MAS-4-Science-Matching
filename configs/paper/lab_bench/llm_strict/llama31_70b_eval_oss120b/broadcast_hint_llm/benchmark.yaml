@@ -1,0 +1,7 @@
+name: broadcast_hint_llm
+task_name: paper/lab_bench/llm_strict/llama31_70b_eval_oss120b/broadcast_hint_llm
+dataset_loader: jsonl
+dataset_path: data/lab-bench-public/llm_strict/all.jsonl
+trace_tag: lab_bench_llm_strict_llama31_70b_eval_oss120b_broadcast_hint_llm
+artifact_tag: lab_bench_llm_strict_llama31_70b_eval_oss120b_broadcast_hint_llm
+output_path: results/lab-bench-public/llm_strict/llama31_70b_eval_oss120b/broadcast_hint_llm/all

@@ -1,0 +1,141 @@
+max_rounds: 3
+name: lab-bench-broadcast_hint_llm
+environment:
+  env_type: task-broadcast-deliberation
+  max_rounds: 3
+  rule:
+    discussion_rounds: 4
+    approval_rounds: 2
+    speak_threshold: 65
+    memory_mode: summary_plus_recent
+    recent_history_window: 5
+    approval_policy: unanimous
+    candidate_selection_policy: majority_revision
+    reviewer_feedback_mode: hint
+    evaluator:
+      type: llm
+      data_name: lab-bench
+      generic_failure_hint: The selected option was judged incorrect. Re-check the question wording, the in-prompt evidence,
+        and the option-letter mapping. Do not repeat a rejected letter unless the previous issue was only formatting.
+    discussion_instruction: 'Contribute one focused message to the LAB-Bench multiple-choice discussion. Avoid repeating points
+      already made. If you believe the group is ready to consider a concrete final answer, include a short section exactly
+      in this form:
+
+      Candidate Answer:
+
+      \boxed{<listed option letter>}'
+agents:
+- agent_type: deliberator
+  name: Mira
+  role_description: Evidence-first biology peer; check prompt details and option wording before proposing an answer.
+  prepend_prompt_template:
+    prompt_ref: deliberator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: deliberator_append_prompt
+  max_retry: 10
+  max_public_context_tokens: 2400
+  max_private_context_tokens: 600
+  max_speak_history_context_tokens: 600
+  max_advice_context_tokens: 2400
+  max_candidate_context_tokens: 300
+  max_manual_prompt_tokens: 12000
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: meta-llama/Meta-Llama-3.1-70B-Instruct
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+  group_description: biology multiple-choice LAB-Bench deliberation group
+  answer_format_guidance: LAB-Bench answers in this run must be exactly one listed multiple-choice option letter in boxed
+    form, for example \boxed{A}.
+  intent_language_guidance: using concise evidence-based biology reasoning
+  review_focus_guidance: Reason carefully about whether the selected letter follows from the prompt evidence and matches the
+    option text.
+  review_feedback_guidance: a concise evidence-based review explaining why you accept the option letter or what is unsupported/wrong
+  final_answer_guidance: your best boxed listed option-letter answer, for example \boxed{A}
+- agent_type: deliberator
+  name: Rowan
+  role_description: Skeptical biology peer; look for misleading distractors, sequence/protocol traps, and unsupported assumptions.
+  prepend_prompt_template:
+    prompt_ref: deliberator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: deliberator_append_prompt
+  max_retry: 10
+  max_public_context_tokens: 2400
+  max_private_context_tokens: 600
+  max_speak_history_context_tokens: 600
+  max_advice_context_tokens: 2400
+  max_candidate_context_tokens: 300
+  max_manual_prompt_tokens: 12000
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: meta-llama/Meta-Llama-3.1-70B-Instruct
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+  group_description: biology multiple-choice LAB-Bench deliberation group
+  answer_format_guidance: LAB-Bench answers in this run must be exactly one listed multiple-choice option letter in boxed
+    form, for example \boxed{A}.
+  intent_language_guidance: using concise evidence-based biology reasoning
+  review_focus_guidance: Reason carefully about whether the selected letter follows from the prompt evidence and matches the
+    option text.
+  review_feedback_guidance: a concise evidence-based review explaining why you accept the option letter or what is unsupported/wrong
+  final_answer_guidance: your best boxed listed option-letter answer, for example \boxed{A}
+- agent_type: deliberator
+  name: Talia
+  role_description: Synthesis-oriented biology peer; consolidate the strongest evidence into one option-letter answer.
+  prepend_prompt_template:
+    prompt_ref: deliberator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: deliberator_append_prompt
+  max_retry: 10
+  max_public_context_tokens: 2400
+  max_private_context_tokens: 600
+  max_speak_history_context_tokens: 600
+  max_advice_context_tokens: 2400
+  max_candidate_context_tokens: 300
+  max_manual_prompt_tokens: 12000
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: meta-llama/Meta-Llama-3.1-70B-Instruct
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+  group_description: biology multiple-choice LAB-Bench deliberation group
+  answer_format_guidance: LAB-Bench answers in this run must be exactly one listed multiple-choice option letter in boxed
+    form, for example \boxed{A}.
+  intent_language_guidance: using concise evidence-based biology reasoning
+  review_focus_guidance: Reason carefully about whether the selected letter follows from the prompt evidence and matches the
+    option text.
+  review_feedback_guidance: a concise evidence-based review explaining why you accept the option letter or what is unsupported/wrong
+  final_answer_guidance: your best boxed listed option-letter answer, for example \boxed{A}
+- agent_type: evaluator
+  name: Evaluator
+  role_description: Constrained LAB-Bench multiple-choice evaluator
+  prepend_prompt_template:
+    prompt_ref: evaluator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: evaluator_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm-evaluator
+    dimensions:
+    - Correctness
+prompt_preset:
+  path: configs/paper/prompt_presets/lab_bench_mc/broadcast_hint_llm.yaml

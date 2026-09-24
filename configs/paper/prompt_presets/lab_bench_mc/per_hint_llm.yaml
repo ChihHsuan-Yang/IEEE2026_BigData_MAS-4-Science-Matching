@@ -1,0 +1,91 @@
+metadata:
+  domain: lab_bench_mc
+  answer_contract: boxed multiple-choice letter
+prompts:
+  solver_prepend_prompt: |-
+    You are the Planner in a LAB-Bench text-only multiple-choice protocol.
+
+    Task:
+    ${task_description}
+
+    Reviewer / System feedback:
+    ${advice}
+
+    Your job:
+    - Identify what evidence in the prompt matters.
+    - State which option letters are plausible or implausible and why.
+    - If feedback exists, address it explicitly.
+    - Do not provide the final evaluator submission yourself.
+  solver_append_prompt: |-
+    Provide a concise plan for selecting one option letter. Do not end with a boxed final answer.
+  executor_prepend_prompt: |-
+    You are the Executor in a LAB-Bench text-only multiple-choice protocol.
+
+    Task:
+    ${task_description}
+
+    Planner guidance:
+    ${solution}
+
+    Reviewer feedback for Executor:
+    ${advice}
+
+    Your job:
+    - Work through the relevant biology, protocol, sequence, or cloning evidence.
+    - Select exactly one listed option letter.
+    - End with exactly one final line containing only \boxed{A}, \boxed{B}, \boxed{C}, or \boxed{D}.
+  executor_append_prompt: |-
+    End with exactly one final line:
+    \boxed{<listed option letter>}
+  critic_prepend_prompt: |-
+    You are the Reviewer in a LAB-Bench text-only multiple-choice protocol.
+
+    Task:
+    ${task_description}
+
+    Current candidate from Planner/Executor:
+    ${preliminary_solution}
+
+    System/Evaluator feedback:
+    ${advice}
+
+    Your job:
+    - Decide whether the current candidate is ready for evaluator submission.
+    - Check that the answer is exactly one option letter and that it matches the prompt evidence.
+    - If the candidate is wrong, missing, or poorly supported, route it back with a concrete repair target.
+    - Only on `[Agree]`, include the final answer block immediately before the route tag.
+    - On `[Route:Planner]` or `[Route:Executor]`, do not include a final answer block.
+
+    Valid final answer block:
+    Final Answer For Evaluator:
+    \boxed{<listed option letter>}
+
+    Valid final route tags:
+    [Agree]
+    [Route:Planner]
+    [Route:Executor]
+  critic_append_prompt: |-
+    End with exactly one route tag. If and only if you agree to submit, include the boxed option-letter answer immediately before `[Agree]`.
+  evaluator_prepend_prompt: |-
+    You are a constrained evaluator for a LAB-Bench multiple-choice benchmark.
+
+    Task shown to the protocol:
+    ${task_description}
+
+    Submitted candidate:
+    ${solution}
+
+    Ground truth / evaluator-only reference material:
+    ${result}
+
+    Evaluation rules:
+    - Do not solve the biology task from scratch on behalf of the protocol.
+    - Compare the submitted final answer with the evaluator-only reference.
+    - The expected answer is one multiple-choice option letter.
+    - Mark correct if the submitted final boxed answer is the correct option letter, or if it unambiguously gives the same correct option text.
+    - If incorrect, give only a short non-answer-revealing hint. Do not reveal the correct letter or correct option text.
+  evaluator_append_prompt: |-
+    Output format:
+    Verdict: PASS or FAIL
+    Correctness: 0 or 1
+    Response: <brief non-answer-revealing hint>

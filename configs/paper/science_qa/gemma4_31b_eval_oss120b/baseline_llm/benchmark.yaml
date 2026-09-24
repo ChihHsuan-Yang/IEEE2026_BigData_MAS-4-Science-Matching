@@ -1,0 +1,7 @@
+name: baseline_llm
+task_name: paper/science_qa/gemma4_31b_eval_oss120b/baseline_llm
+dataset_loader: jsonl
+dataset_path: data/science-benchmarks/jeebench/all.jsonl
+trace_tag: science_qa_gemma4_31b_eval_oss120b_baseline_llm
+artifact_tag: science_qa_gemma4_31b_eval_oss120b_baseline_llm
+output_path: results/science-benchmarks/gemma4_31b_eval_oss120b/baseline_llm/all

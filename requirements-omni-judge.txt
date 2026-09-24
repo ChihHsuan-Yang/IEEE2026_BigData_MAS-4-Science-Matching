@@ -1,0 +1,6 @@
+# Optional: the local open-source Omni-Judge evaluator
+# (only needed for `--extra_post_eval omni-judge`; runs locally via transformers).
+-r requirements.txt
+transformers>=4.48,<5
+accelerate
+torch

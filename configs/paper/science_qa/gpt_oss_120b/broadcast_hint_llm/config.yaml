@@ -1,0 +1,141 @@
+max_rounds: 3
+name: science-qa-broadcast_hint_llm
+environment:
+  env_type: task-broadcast-deliberation
+  max_rounds: 3
+  rule:
+    discussion_rounds: 4
+    approval_rounds: 2
+    speak_threshold: 65
+    memory_mode: summary_plus_recent
+    recent_history_window: 5
+    approval_policy: unanimous
+    candidate_selection_policy: majority_revision
+    reviewer_feedback_mode: hint
+    evaluator:
+      type: llm
+      data_name: science-qa
+      generic_failure_hint: The submitted answer was judged incorrect. Re-check the requested answer format, the option-letter
+        mapping if choices are present, numeric units if relevant, and the scientific reasoning. Do not repeat a rejected
+        answer unless the prior issue was only formatting.
+    discussion_instruction: 'Contribute one focused message to the scientific reasoning discussion. If you believe the group
+      is ready to consider a concrete final answer, include:
+
+      Candidate Answer:
+
+      \boxed{<answer>}'
+agents:
+- agent_type: deliberator
+  name: Mira
+  role_description: Evidence-first scientific peer; check equations, units, option wording, and requested answer format.
+  prepend_prompt_template:
+    prompt_ref: deliberator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: deliberator_append_prompt
+  max_retry: 10
+  max_public_context_tokens: 2400
+  max_private_context_tokens: 600
+  max_speak_history_context_tokens: 600
+  max_advice_context_tokens: 2400
+  max_candidate_context_tokens: 300
+  max_manual_prompt_tokens: 12000
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+  group_description: scientific reasoning broadcast-deliberation group
+  answer_format_guidance: Final answers in this run must be boxed. Use option letters when the task is multiple-choice (including
+    multi-letter answers such as \boxed{ABD}); otherwise use the requested numeric, symbolic, or short textual answer.
+  intent_language_guidance: using concise scientific reasoning
+  review_focus_guidance: Check whether the candidate follows the requested answer format, option mapping, units, and scientific
+    reasoning.
+  review_feedback_guidance: a concise scientific review explaining why you accept the answer or what needs repair
+  final_answer_guidance: your best boxed answer, e.g. \boxed{A}, \boxed{ABD}, \boxed{50.7 atm}, or \boxed{x=2}
+- agent_type: deliberator
+  name: Rowan
+  role_description: Skeptical scientific peer; look for conceptual traps, unit mistakes, and unsupported assumptions.
+  prepend_prompt_template:
+    prompt_ref: deliberator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: deliberator_append_prompt
+  max_retry: 10
+  max_public_context_tokens: 2400
+  max_private_context_tokens: 600
+  max_speak_history_context_tokens: 600
+  max_advice_context_tokens: 2400
+  max_candidate_context_tokens: 300
+  max_manual_prompt_tokens: 12000
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+  group_description: scientific reasoning broadcast-deliberation group
+  answer_format_guidance: Final answers in this run must be boxed. Use option letters when the task is multiple-choice (including
+    multi-letter answers such as \boxed{ABD}); otherwise use the requested numeric, symbolic, or short textual answer.
+  intent_language_guidance: using concise scientific reasoning
+  review_focus_guidance: Check whether the candidate follows the requested answer format, option mapping, units, and scientific
+    reasoning.
+  review_feedback_guidance: a concise scientific review explaining why you accept the answer or what needs repair
+  final_answer_guidance: your best boxed answer, e.g. \boxed{A}, \boxed{ABD}, \boxed{50.7 atm}, or \boxed{x=2}
+- agent_type: deliberator
+  name: Talia
+  role_description: Synthesis-oriented scientific peer; consolidate the strongest reasoning into one final answer.
+  prepend_prompt_template:
+    prompt_ref: deliberator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: deliberator_append_prompt
+  max_retry: 10
+  max_public_context_tokens: 2400
+  max_private_context_tokens: 600
+  max_speak_history_context_tokens: 600
+  max_advice_context_tokens: 2400
+  max_candidate_context_tokens: 300
+  max_manual_prompt_tokens: 12000
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+  group_description: scientific reasoning broadcast-deliberation group
+  answer_format_guidance: Final answers in this run must be boxed. Use option letters when the task is multiple-choice (including
+    multi-letter answers such as \boxed{ABD}); otherwise use the requested numeric, symbolic, or short textual answer.
+  intent_language_guidance: using concise scientific reasoning
+  review_focus_guidance: Check whether the candidate follows the requested answer format, option mapping, units, and scientific
+    reasoning.
+  review_feedback_guidance: a concise scientific review explaining why you accept the answer or what needs repair
+  final_answer_guidance: your best boxed answer, e.g. \boxed{A}, \boxed{ABD}, \boxed{50.7 atm}, or \boxed{x=2}
+- agent_type: evaluator
+  name: Evaluator
+  role_description: Constrained scientific-answer evaluator
+  prepend_prompt_template:
+    prompt_ref: evaluator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: evaluator_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm-evaluator
+    dimensions:
+    - Correctness
+prompt_preset:
+  path: configs/paper/prompt_presets/science_qa/broadcast_hint_llm.yaml

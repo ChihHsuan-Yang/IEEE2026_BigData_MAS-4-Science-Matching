@@ -1,0 +1,42 @@
+metadata:
+  domain: lab_bench_mc
+  answer_contract: boxed multiple-choice letter
+prompts:
+  solver_prepend_prompt: |-
+    You are answering a LAB-Bench biology research multiple-choice question as a text-only LLM.
+
+    Task:
+    ${task_description}
+
+    Instructions:
+    - Use only the information in the prompt and your model knowledge. Do not assume access to tools, databases, papers, images, or tables.
+    - Choose exactly one listed option letter.
+    - Reason briefly enough to avoid losing the final answer.
+    - Your final line must be exactly one boxed option letter: \boxed{A}, \boxed{B}, \boxed{C}, or \boxed{D}.
+    - Do not put any text after the boxed final answer.
+  solver_append_prompt: |-
+    End with exactly one final line:
+    \boxed{<listed option letter>}
+  evaluator_prepend_prompt: |-
+    You are a constrained evaluator for a LAB-Bench multiple-choice benchmark.
+
+    Task shown to the solver:
+    ${task_description}
+
+    Solver final submission:
+    ${solution}
+
+    Ground truth / evaluator-only reference material:
+    ${result}
+
+    Evaluation rules:
+    - Do not solve the biology task from scratch on behalf of the protocol.
+    - Compare the submitted final answer with the evaluator-only reference.
+    - The expected answer is one multiple-choice option letter.
+    - Mark correct if the submitted final boxed answer is the correct option letter, or if it unambiguously gives the same correct option text.
+    - If incorrect, give only a short non-answer-revealing hint. Do not reveal the correct letter or correct option text.
+  evaluator_append_prompt: |-
+    Output format:
+    Verdict: PASS or FAIL
+    Correctness: 0 or 1
+    Response: <brief non-answer-revealing hint>

@@ -1,0 +1,103 @@
+max_rounds: 3
+inner_rounds: 2
+name: science-qa-per_hint_llm
+environment:
+  env_type: task-per
+  max_rounds: 3
+  rule:
+    inner_rounds: 2
+    stop_on_agree: true
+    reviewer_feedback_mode: hint
+    failed_attempt_memory_limit: 3
+    candidate_revision_memory_limit: 5
+    evaluator:
+      type: llm
+      data_name: science-qa
+      generic_failure_hint: The submitted answer was judged incorrect. Re-check the requested answer format, the option-letter
+        mapping if choices are present, numeric units if relevant, and the scientific reasoning. Do not repeat a rejected
+        answer unless the prior issue was only formatting.
+agents:
+- agent_type: solver
+  name: Planner
+  role_description: Planner who identifies the relevant scientific concepts, answer format, and constraints
+  prepend_prompt_template:
+    prompt_ref: solver_prepend_prompt
+  append_prompt_template:
+    prompt_ref: solver_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+    has_summary: true
+    max_summary_tlength: 300
+    summary_model: openai/gpt-oss-120b
+    summary_update_every_n_messages: 3
+    summary_keep_last_n_messages: 0
+    summary_keep_recent_token_budget: 200
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm
+- agent_type: executor
+  name: Executor
+  role_description: Executor who solves the scientific problem and submits the final boxed answer
+  prepend_prompt_template:
+    prompt_ref: executor_prepend_prompt
+  append_prompt_template:
+    prompt_ref: executor_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm
+- agent_type: critic
+  name: Reviewer
+  role_description: Reviewer who checks scientific reasoning and answer-format compliance before submission
+  prepend_prompt_template:
+    prompt_ref: critic_prepend_prompt
+  append_prompt_template:
+    prompt_ref: critic_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+    has_summary: true
+    max_summary_tlength: 300
+    summary_model: openai/gpt-oss-120b
+    summary_update_every_n_messages: 3
+    summary_keep_last_n_messages: 0
+    summary_keep_recent_token_budget: 200
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm-critic-route
+- agent_type: evaluator
+  name: Evaluator
+  role_description: Constrained scientific-answer evaluator
+  prepend_prompt_template:
+    prompt_ref: evaluator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: evaluator_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm-evaluator
+    dimensions:
+    - Correctness
+prompt_preset:
+  path: configs/paper/prompt_presets/science_qa/per_hint_llm.yaml

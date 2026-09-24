@@ -1,0 +1,56 @@
+max_rounds: 3
+name: lab-bench-single_agent_hint_llm
+environment:
+  env_type: task-single-agent-reflect
+  max_rounds: 3
+  rule:
+    reset_solver_memory_each_attempt: true
+    reviewer_feedback_mode: hint
+    evaluator:
+      type: llm
+      data_name: lab-bench
+      generic_failure_hint: The selected option was judged incorrect. Re-check the question wording, the in-prompt evidence,
+        and the option-letter mapping. Do not repeat a rejected letter unless the previous issue was only formatting.
+agents:
+- agent_type: solver
+  name: Solo
+  role_description: Text-only LAB-Bench multiple-choice solver
+  first_attempt_prepend_prompt_template:
+    prompt_ref: first_attempt_prepend_prompt
+  first_attempt_append_prompt_template:
+    prompt_ref: first_attempt_append_prompt
+  prepend_prompt_template:
+    prompt_ref: retry_prepend_prompt
+  append_prompt_template:
+    prompt_ref: retry_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: google/gemma-4-E4B-it
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: dummy
+- agent_type: evaluator
+  name: Evaluator
+  role_description: Constrained LAB-Bench multiple-choice evaluator
+  prepend_prompt_template:
+    prompt_ref: evaluator_prepend_prompt
+  append_prompt_template:
+    prompt_ref: evaluator_append_prompt
+  max_retry: 10
+  memory:
+    memory_type: chat_history
+  llm:
+    llm_type: gpt-3.5-turbo
+    model: openai/gpt-oss-120b
+    temperature: 0
+    max_tokens: 1024
+  output_parser:
+    type: mgsm-evaluator
+    dimensions:
+    - Correctness
+prompt_preset:
+  path: configs/paper/prompt_presets/lab_bench_mc/single_agent_hint_llm.yaml

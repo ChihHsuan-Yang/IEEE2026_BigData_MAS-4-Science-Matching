@@ -1,0 +1,7 @@
+name: broadcast_hint_llm
+task_name: paper/lab_bench/text_no_tool/gpt_oss_120b/broadcast_hint_llm
+dataset_loader: jsonl
+dataset_path: data/lab-bench-public/text_no_tool/all.jsonl
+trace_tag: lab_bench_text_no_tool_gpt_oss_120b_broadcast_hint_llm
+artifact_tag: lab_bench_text_no_tool_gpt_oss_120b_broadcast_hint_llm
+output_path: results/lab-bench-public/text_no_tool/gpt_oss_120b/broadcast_hint_llm/all
