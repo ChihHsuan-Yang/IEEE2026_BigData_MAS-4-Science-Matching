@@ -186,7 +186,8 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright [yyyy] [name of copyright owner]
+   Copyright 2023 OpenBMB/AgentVerse contributors
+   Copyright 2026 UChicago Argonne, LLC, Operator of Argonne National Laboratory
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -199,3 +200,24 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+
+------------------------------------------------------------------------------
+
+ATTRIBUTION AND MODIFICATION NOTICE
+
+Portions of this software are derived from AgentVerse
+(https://github.com/OpenBMB/AgentVerse), distributed under the Apache License,
+Version 2.0. The original copyright notice is retained above in accordance with
+Section 4 of that License.
+
+This work has been substantially modified. Modifications made by UChicago
+Argonne, LLC in 2026 include, but are not limited to: the four matched
+end-to-end protocol environments (direct baseline, single-agent iterative,
+planner-executor-reviewer, and broadcast deliberation), the execution
+measurement and tracing layer, the trace-processing and dataset-release
+pipeline, the benchmark preparation scripts, and the evaluation and metrics
+tooling.
+
+Files changed from their original form carry this notice by reference. See
+NOTICE for a summary of attribution obligations that pass downstream.

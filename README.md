@@ -12,7 +12,7 @@ corpus end to end:
    and aggregate metrics).
 
 The released corpus is on the Hugging Face Hub:
-**https://huggingface.co/datasets/AgentsSci/scientific-agent-protocol-traces**
+**https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching**
 
 Documentation site:
 **https://huggingface.co/spaces/AgentsSci/scientific-agent-protocol-traces-site**
@@ -288,22 +288,28 @@ Placeholder — to be replaced with the proceedings reference.
   author       = {Yang, Chih-Hsuan and Thakur, Rajeev},
   year         = {2026},
   note         = {Under submission to IEEE BigData 2026},
-  howpublished = {\url{https://huggingface.co/datasets/AgentsSci/scientific-agent-protocol-traces}}
+  howpublished = {\url{https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching}}
 }
 ```
 
 ## Authors
 
 - **Chih-Hsuan Yang**, Argonne National Laboratory — corresponding author,
-  `bellayang@anl.gov`
+  (contact via institutional directory)
 - **Rajeev Thakur**, Argonne National Laboratory
 
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).
 
-This repository derives from [AgentVerse](https://github.com/OpenBMB/AgentVerse)
-(Apache 2.0). The four protocol environments, the trace and metrics layer, and
-the release-processing scripts are additions made for this work.
+Copyright 2026 UChicago Argonne, LLC, Operator of Argonne National Laboratory.
+
+Portions derive from [AgentVerse](https://github.com/OpenBMB/AgentVerse)
+(Apache 2.0), whose copyright notice is retained in [LICENSE](LICENSE) as
+Section 4 of that license requires. This work has been substantially modified:
+the four matched protocol environments, the execution measurement and tracing
+layer, the trace-processing and dataset-release pipeline, the benchmark
+preparation scripts, and the evaluation tooling were built for this work. See
+[NOTICE](NOTICE) for the attribution summary.
 
 Benchmark datasets and model weights carry their own separate licenses.

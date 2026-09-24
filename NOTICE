@@ -1,0 +1,18 @@
+SciAgentTrace protocol runtime and trace-processing tools
+Copyright 2026 UChicago Argonne, LLC, Operator of Argonne National Laboratory
+
+This product includes software derived from AgentVerse
+(https://github.com/OpenBMB/AgentVerse), Copyright 2023 OpenBMB/AgentVerse
+contributors, licensed under the Apache License, Version 2.0.
+
+The derived portions have been substantially modified for this work. See
+LICENSE for the full license text, the retained upstream copyright notice, and
+the statement of modifications required by Section 4(b) of the Apache License.
+
+Third-party components vendored into this repository retain their own license
+headers where present.
+
+Benchmark datasets and model weights referenced by this software are NOT
+covered by this license and carry their own separate terms. In particular,
+LAB-Bench material is CC-BY-SA-4.0 with an upstream do-not-train request, and
+MaScQA material is CC-BY-NC-SA-4.0 (non-commercial).
