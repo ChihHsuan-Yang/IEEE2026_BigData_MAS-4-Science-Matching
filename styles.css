@@ -598,3 +598,23 @@ footer p {
   body { font-size: 11pt; }
   a { text-decoration: underline; }
 }
+
+/* Protocol information-flow figure */
+.protofig {
+  margin: 1.75rem 0 2rem;
+  padding: 0;
+}
+.protofig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: #fff;
+}
+.protofig figcaption {
+  margin-top: .75rem;
+  color: var(--ink-muted);
+  font-size: .92rem;
+  line-height: 1.55;
+}
