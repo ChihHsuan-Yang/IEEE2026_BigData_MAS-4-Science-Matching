@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SciAgentTrace — Execution-Layer Traces for Scientific-Agent Workload Characterization</title>
+<meta name="description" content="SciAgentTrace is an open dataset of 53,224 matched scientific-agent trajectories: 6,653 problems across five benchmark families, run under four collaboration protocols and two LLM actor models, with client-observed elapsed time, token totals and model-request counts.">
+<meta name="keywords" content="SciAgentTrace, agent traces, multi-agent systems, LLM workload characterization, execution traces, data-centric AI, scientific reasoning, protocol routing, IEEE BigData 2026">
+<meta name="author" content="Chih-Hsuan Yang, Rajeev Thakur, Argonne National Laboratory">
+
+<!-- Indexing: this page is public and should be discoverable -->
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<meta name="googlebot" content="index, follow">
+<link rel="canonical" href="https://chihhsuan-yang.github.io/IEEE2026_BigData_MAS-4-Science-Matching/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SciAgentTrace">
+<meta property="og:title" content="SciAgentTrace — Execution-Layer Traces for Scientific-Agent Workload Characterization">
+<meta property="og:description" content="53,224 matched scientific-agent trajectories across five benchmark families, four collaboration protocols and two LLM actor models, with an audited execution layer. Openly available.">
+<meta property="og:url" content="https://chihhsuan-yang.github.io/IEEE2026_BigData_MAS-4-Science-Matching/">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SciAgentTrace — Execution-Layer Agent Traces">
+<meta name="twitter:description" content="An open corpus of 53,224 matched scientific-agent trajectories with client-observed elapsed time, token totals and model-request counts.">
+
+<link rel="stylesheet" href="styles.css">
+
+<!-- Structured data: helps Google surface this as a dataset -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "SciAgentTrace",
+  "alternateName": "IEEE2026_BigData_MAS-4-Science-Matching",
+  "description": "A matched cross-domain corpus of scientific-agent protocol executions. The same 6,653 problems from five benchmark families are executed under four collaboration protocols and two actor models, yielding 53,224 trajectories. Each trajectory links an ordered trace to an evaluated answer and an execution record: client-observed elapsed time for all trajectories, and successful-response token totals with observable model-request counts for 39,918.",
+  "url": "https://chihhsuan-yang.github.io/IEEE2026_BigData_MAS-4-Science-Matching/",
+  "sameAs": [
+    "https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching",
+    "https://github.com/ChihHsuan-Yang/IEEE2026_BigData_MAS-4-Science-Matching"
+  ],
+  "keywords": ["agent traces","multi-agent systems","LLM workload characterization","execution traces","data-centric AI","scientific reasoning"],
+  "creator": [
+    {"@type": "Person", "name": "Chih-Hsuan Yang", "affiliation": {"@type": "Organization", "name": "Argonne National Laboratory"}},
+    {"@type": "Person", "name": "Rajeev Thakur", "affiliation": {"@type": "Organization", "name": "Argonne National Laboratory"}}
+  ],
+  "isAccessibleForFree": true,
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
+  "distribution": [
+    {"@type": "DataDownload", "encodingFormat": "application/x-parquet",
+      "contentUrl": "https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching"}
+  ],
+  "variableMeasured": [
+    {"@type": "PropertyValue", "name": "client-observed elapsed time", "description": "Wall time around the complete per-problem protocol call, present for all 53,224 matched trajectories."},
+    {"@type": "PropertyValue", "name": "successful-response token totals", "description": "Prompt, completion and total tokens, present for 39,918 trajectories."},
+    {"@type": "PropertyValue", "name": "observable model-request counts", "description": "Model-request submissions across all roles, present for 39,918 trajectories."}
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="nav-brand" href="#top">SciAgentTrace</a>
+    <nav aria-label="Section navigation">
+      <ul class="nav-links">
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#execution-layer">Execution layer</a></li>
+        <li><a href="#composition">Composition</a></li>
+        <li><a href="#protocols">Protocols</a></li>
+        <li><a href="#coverage">Coverage</a></li>
+        <li><a href="#findings">Findings</a></li>
+        <li><a href="#access">Access</a></li>
+        <li><a href="#licensing">Licensing</a></li>
+        <li><a href="#citation">Citation</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top" style="border-top:0">
+  <div class="wrap">
+    <p class="venue">Under submission &middot; IEEE BigData 2026</p>
+
+    <h1>SciAgentTrace</h1>
+    <p class="hero-sub">
+      A matched cross-domain corpus of scientific-agent protocol executions &mdash;
+      released with an <strong>execution layer</strong> that records what each
+      protocol actually cost to run, not only whether it got the answer right.
+    </p>
+
+    <p class="authors">
+      Chih-Hsuan Yang &middot; Rajeev Thakur &mdash; Argonne National Laboratory
+      &nbsp;Author list is not yet confirmed for this venue and must be supplied before publication.
+    </p>
+
+    <ul class="btn-row">
+      <li><a class="btn btn-primary" href="https://huggingface.co/spaces/AgentsSci/scientific-agent-protocol-traces-site">Documentation&nbsp;Space</a></li>
+      <li><a class="btn" href="#access">Access&nbsp;status</a></li>
+      <li><a class="btn" href="#composition">Dataset&nbsp;composition</a></li>
+      <li><a class="btn" href="https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching">Get the dataset</a></li>
+      <li><a class="btn" href="https://github.com/ChihHsuan-Yang/IEEE2026_BigData_MAS-4-Science-Matching">Code on GitHub</a></li>
+    </ul>
+
+    <h2 class="visually-hidden">Headline figures</h2>
+    <dl class="stats">
+      <div class="stat">
+        <dd class="stat-value">53,224</dd>
+        <dt class="stat-label">matched trajectories in the core panel</dt>
+      </div>
+      <div class="stat">
+        <dd class="stat-value">6,653</dd>
+        <dt class="stat-label">problems, each run under every model &times; protocol</dt>
+      </div>
+      <div class="stat">
+        <dd class="stat-value">40</dd>
+        <dt class="stat-label">complete actor-family-protocol cells</dt>
+      </div>
+      <div class="stat">
+        <dd class="stat-value">1,889,265</dd>
+        <dt class="stat-label">ordered trace events in the full package</dt>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ WHAT IT IS ============ -->
+<section id="overview">
+  <div class="wrap">
+    <p class="eyebrow">What SciAgentTrace is</p>
+    <h2>A workload-characterization resource for scientific agents</h2>
+
+    <p class="lede">
+      SciAgentTrace records the same scientific problems being solved repeatedly
+      under different agent protocols, and keeps the operational evidence of each
+      run. It is built to support <strong>ML workload characterization</strong> and
+      <strong>data-centric AI</strong> research: the unit of study is the request
+      structure a protocol generates, not just the answer it returns.
+    </p>
+
+    <p>
+      The corpus is <em>matched</em> by construction. A single fixed set of 6,653
+      problems is executed under two actor models and four protocols, producing
+      53,224 trajectories arranged in 40 complete actor-family-protocol cells.
+      Because every cell sees an identical problem set, differences between
+      protocols can be read without re-weighting for problem difficulty or
+      benchmark mix.
+    </p>
+
+    <ul class="cards">
+      <li class="card">
+        <span class="card-tag">matched panel</span>
+        <h3>One problem set, every condition</h3>
+        <p>6,653 problems &times; 2 actor models &times; 4 protocols = 53,224 trajectories, with no cell left partially populated.</p>
+      </li>
+      <li class="card">
+        <span class="card-tag">execution layer</span>
+        <h3>Operational evidence, not just outcomes</h3>
+        <p>Client-observed elapsed time on every matched trajectory; token totals and observable model-request counts wherever they can be attributed.</p>
+      </li>
+      <li class="card">
+        <span class="card-tag">provenance</span>
+        <h3>An availability mask, not imputed zeros</h3>
+        <p>Fields that cannot be attributed to a single request stay unavailable and are marked as such. Nothing is filled in with a zero.</p>
+      </li>
+    </ul>
+
+    <div class="table-scroll">
+      <table>
+        <caption>The full released package, beyond the matched core panel.</caption>
+        <thead>
+          <tr><th scope="col">Component</th><th scope="col" class="num">Count</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">End-to-end trajectory records</th><td class="num">68,892</td></tr>
+          <tr><th scope="row">Ordered trace events</th><td class="num">1,889,265</td></tr>
+          <tr><th scope="row">Problems</th><td class="num">7,467</td></tr>
+          <tr><th scope="row">Matched outcome groups</th><td class="num">17,223</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note">
+      The full package is broader than the matched core panel: it retains runs
+      outside the strict 6,653-problem matched design. Analyses that depend on
+      matching should use the core panel.
+    </p>
+  </div>
+</section>
+
+<!-- ============ EXECUTION LAYER ============ -->
+<section id="execution-layer">
+  <div class="wrap">
+    <p class="eyebrow">Why it is different</p>
+    <h2>The execution layer</h2>
+
+    <p class="lede">
+      Most agent-protocol datasets record what was said and whether the final
+      answer was correct. SciAgentTrace additionally records what the run
+      <em>cost the serving system</em>, on the same matched design &mdash; which is
+      what makes protocol comparison a workload question rather than only an
+      accuracy question.
+    </p>
+
+    <dl class="deflist">
+      <dt>Client-observed elapsed time</dt>
+      <dd>
+        Wall-clock duration as observed at the client, recorded for all 53,224
+        matched trajectories. This is the one execution-layer field with complete
+        coverage across the matched panel.
+      </dd>
+
+      <dt>Successful-response token totals</dt>
+      <dd>
+        Token accounting for responses that completed successfully, available on
+        39,918 matched trajectories.
+      </dd>
+
+      <dt>Observable model-request counts</dt>
+      <dd>
+        The number of model requests visible to the client, available on the same
+        39,918 matched trajectories. Request count is the field that carries most
+        of the structural difference between protocols.
+      </dd>
+    </dl>
+
+    <div class="callout">
+      <h3>Why request structure matters</h3>
+      <p>
+        Two protocols can consume a similar number of tokens while issuing very
+        different numbers of requests, and it is the request pattern &mdash; not the
+        token total alone &mdash; that determines queueing behaviour, concurrency and
+        latency in a serving system. Recording requests and tokens separately, on
+        matched problems, is what lets that distinction be measured instead of
+        assumed.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPOSITION ============ -->
+<section id="composition">
+  <div class="wrap">
+    <p class="eyebrow">Dataset composition</p>
+    <h2>Five benchmark families, five scientific domains</h2>
+
+    <p class="lede">
+      The matched problem set is drawn from five established benchmark families
+      spanning competition mathematics through experimental biology and materials
+      science. Each family is carried through all eight model &times; protocol
+      conditions.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <caption>The matched core panel by benchmark family. Every family is executed under both actor models and all four protocols.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Benchmark family</th>
+            <th scope="col">Domain</th>
+            <th scope="col" class="num">Problems</th>
+            <th scope="col" class="num">Trajectories<sup><a href="#fn-derived" id="ref-derived">1</a></sup></th>
+            <th scope="col" class="num">Cells</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">OmniMath2</th><td>Competition mathematics</td><td class="num">4,181</td><td class="num">33,448</td><td class="num">8</td></tr>
+          <tr><th scope="row">JEEBench</th><td>Pre-engineering science</td><td class="num">515</td><td class="num">4,120</td><td class="num">8</td></tr>
+          <tr><th scope="row">SciBench</th><td>College science</td><td class="num">574</td><td class="num">4,592</td><td class="num">8</td></tr>
+          <tr><th scope="row">LAB-Bench</th><td>Biology</td><td class="num">741</td><td class="num">5,928</td><td class="num">8</td></tr>
+          <tr><th scope="row">MaScQA</th><td>Materials science</td><td class="num">642</td><td class="num">5,136</td><td class="num">8</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Total</td><td></td><td class="num">6,653</td><td class="num">53,224</td><td class="num">40</td></tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="table-note" id="fn-derived">
+      <sup>1</sup> The per-family trajectory column is <em>derived</em> as
+      problems &times; 2 actor models &times; 4 protocols; it sums to the verified
+      panel total of 53,224. 
+      <a href="#ref-derived" aria-label="Back to table">&#8617;</a>
+    </p>
+
+    <h3 style="margin-top:2.5rem">Actor models</h3>
+    <ul class="cards">
+      <li class="card">
+        <span class="card-tag">actor arm 1</span>
+        <h4>Gemma 4 31B</h4>
+        <p>One of two actor models executing every protocol across every benchmark family.</p>
+      </li>
+      <li class="card">
+        <span class="card-tag">actor arm 2 &middot; evaluator</span>
+        <h4>GPT-OSS 120B</h4>
+        <p>The second actor arm, and also the fixed answer evaluator for <em>both</em> arms &mdash; so outcome labelling is held constant across the comparison.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ PROTOCOLS ============ -->
+<section id="protocols">
+  <div class="wrap">
+    <p class="eyebrow">Protocols</p>
+    <h2>Four execution protocols</h2>
+
+    <p class="lede">
+      Each protocol is a different way of spending compute on the same problem.
+      They range from a single request to a multi-agent exchange, which is what
+      produces the spread in request structure that the execution layer captures.
+    </p>
+
+    <ul class="cards">
+      <li class="card">
+        <span class="card-tag">protocol 1</span>
+        <h3>Direct Baseline</h3>
+        <p>A single pass at the problem with no iteration and no additional roles. This is the reference condition against which the other three are compared.</p>
+      </li>
+      <li class="card">
+        <span class="card-tag">protocol 2</span>
+        <h3>Single-Agent Iterative</h3>
+        <p>One agent revisits and revises its own work across multiple turns, adding requests without adding roles.</p>
+      </li>
+      <li class="card">
+        <span class="card-tag">protocol 3</span>
+        <h3>Planner-Executor-Reviewer (PER)</h3>
+        <p>Work is split across three distinct roles &mdash; planning, execution and review &mdash; in a structured pipeline.</p>
+      </li>
+      <li class="card">
+        <span class="card-tag">protocol 4</span>
+        <h3>Broadcast Deliberation</h3>
+        <p>Multiple agents exchange messages over a shared broadcast channel before an answer is settled.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ COVERAGE ============ -->
+<section id="coverage">
+  <div class="wrap">
+    <p class="eyebrow">Measurement coverage</p>
+    <h2>An audited coverage boundary</h2>
+
+    <p class="lede">
+      Execution-layer coverage is not uniform, and the corpus states exactly where
+      it stops. Elapsed time is complete across the matched panel. Token totals and
+      request counts are available on 39,918 of 53,224 trajectories.
+    </p>
+
+    <div class="meter-block">
+      <h3 id="meter-heading">Execution-layer coverage across the 53,224 matched trajectories</h3>
+      <div class="meter" role="img"
+           aria-labelledby="meter-heading"
+           aria-describedby="meter-desc">
+        <div class="meter-seg meter-seg-full">39,918 &middot; 75.0%</div>
+        <div class="meter-seg meter-seg-partial">13,306 &middot; 25.0%</div>
+      </div>
+      <ul class="meter-key">
+        <li>
+          <span class="swatch swatch-full" aria-hidden="true"></span>
+          <span><strong>39,918 trajectories (75.0%)</strong> &mdash; elapsed time, successful-response token totals, and observable model-request counts.</span>
+        </li>
+        <li>
+          <span class="swatch swatch-partial" aria-hidden="true"></span>
+          <span><strong>13,306 trajectories (25.0%)</strong> &mdash; elapsed time only. All are Planner-Executor-Reviewer runs.</span>
+        </li>
+      </ul>
+      <p id="meter-desc" class="visually-hidden">
+        Of 53,224 matched trajectories, 39,918 (75.0 percent) carry elapsed time,
+        token totals and request counts; the remaining 13,306 (25.0 percent), all
+        Planner-Executor-Reviewer runs, carry elapsed time only.
+      </p>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <caption>Execution-layer field availability across the matched core panel.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Field</th>
+            <th scope="col" class="num">Trajectories covered</th>
+            <th scope="col" class="num">Share of panel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Client-observed elapsed time</th><td class="num">53,224</td><td class="num">100.0%</td></tr>
+          <tr><th scope="row">Successful-response token totals</th><td class="num">39,918</td><td class="num">75.0%</td></tr>
+          <tr><th scope="row">Observable model-request counts</th><td class="num">39,918</td><td class="num">75.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout">
+      <h3>The PER boundary is audited, not missing</h3>
+      <p>
+        The 13,306 elapsed-only trajectories are Planner-Executor-Reviewer runs.
+        PER's counters accumulate across its roles in a way that cannot be
+        separated into per-request totals after the fact, so token and request
+        figures for those runs are <em>not recoverable post-hoc</em> &mdash; this is a
+        property of how the protocol was instrumented, not a gap in collection.
+      </p>
+      <p>
+        The corpus therefore ships an <strong>availability mask</strong> and an audit
+        trail recording precisely which trajectories carry which fields.
+        Unavailable values remain unavailable: <strong>they are never imputed as
+        zero</strong>, because a zero token count is a measurement, and an absent one
+        is not. Any analysis using token or request fields should read the mask and
+        restrict itself to the 39,918 covered trajectories; elapsed-time analyses
+        can use the whole panel.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FINDINGS ============ -->
+<section id="findings">
+  <div class="wrap">
+    <p class="eyebrow">Workload findings</p>
+    <h2>What the execution layer shows</h2>
+
+    <p class="lede">
+      Two headline results from the corpus. Both are descriptive characterizations
+      of the released workload, not controlled serving-system experiments.
+    </p>
+
+    <h3>Protocols spend very different amounts of wall-clock time</h3>
+    <p>
+      Measured as equal-family median elapsed ratios against the Direct Baseline,
+      the other protocols range from
+      <strong>1.06&times; to 6.18&times;</strong> under Gemma 4 31B and
+      <strong>1.55&times; to 8.38&times;</strong> under GPT-OSS 120B. The spread is
+      wide enough that protocol choice, not model choice alone, dominates the time
+      a workload takes.
+    </p>
+
+    <h3>Request structure carries information that tokens alone do not</h3>
+    <p>
+      In held-out-problem prediction of elapsed time, adding request count and
+      protocol identity to a tokens-only predictor raises R&sup2; from
+      <strong>0.695 to 0.789</strong> for Gemma 4 31B and from
+      <strong>0.773 to 0.803</strong> for GPT-OSS 120B. Token volume is not a
+      sufficient statistic for the cost of an agent workload; how the work is
+      divided into requests matters on its own.
+    </p>
+
+    <div class="callout">
+      <h3>Scope of these figures</h3>
+      <p>
+        These are observational measurements taken on the released corpus under the
+        conditions it was collected in. They characterize this workload; they are
+        not claims about serving systems in general, and no controlled
+        infrastructure comparison is implied.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACCESS ============ -->
+<section id="access">
+  <div class="wrap">
+    <p class="eyebrow">Access status</p>
+    <h2>Availability</h2>
+
+    <div class="callout">
+      <h3>Full public release &mdash; no credentials required</h3>
+      <p>
+        The corpus, the code that produced it, and its documentation are openly
+        available. Anonymous access was verified by unauthenticated HTTPS request
+        with no token present: the dataset API returns <code>private: false</code>
+        and Parquet files download directly.
+      </p>
+    </div>
+
+    <h3>Where to get it</h3>
+    <dl class="deflist">
+      <dt>Dataset</dt>
+      <dd>
+        <a href="https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching">huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching</a>
+        &mdash; trajectories, outcomes, matched outcomes, problems, ordered trace
+        events, execution records, registry, and integrity manifests.
+      </dd>
+
+      <dt>Code</dt>
+      <dd>
+        <a href="https://github.com/ChihHsuan-Yang/IEEE2026_BigData_MAS-4-Science-Matching">github.com/ChihHsuan-Yang/IEEE2026_BigData_MAS-4-Science-Matching</a>
+        &mdash; the protocol runtime for all four protocols, the trace-processing
+        pipeline, benchmark preparation, and evaluation tooling.
+      </dd>
+
+      <dt>Paper</dt>
+      <dd>
+        Under submission to IEEE BigData 2026. A link will be added once the
+        proceedings entry exists.
+      </dd>
+    </dl>
+
+    <h3>Load it in one line</h3>
+    <pre class="code"><code>from datasets import load_dataset
+
+repo = "AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching"
+traj = load_dataset(repo, "trajectories", split="test")</code></pre>
+
+    <p class="table-note" style="margin-top:1.5rem">
+      Using it correctly: match <code>problem_uid</code> across the protocols you
+      compare, name the actor and evaluator, and match the execution configuration
+      before comparing elapsed time. Preserve unavailable fields rather than
+      coercing them to zero.
+    </p>
+  </div>
+</section>
+
+<!-- ============ LICENSING ============ -->
+<section id="licensing">
+  <div class="wrap">
+    <p class="eyebrow">Licensing</p>
+    <h2>Composite terms &mdash; there is no single license</h2>
+
+    <p class="lede">
+      SciAgentTrace extends upstream benchmark families that carry different and
+      partly incompatible terms. The corpus therefore <strong>cannot be offered
+      under one permissive license</strong>, and reuse obligations differ by
+      constituent family.
+    </p>
+
+    <div class="table-scroll">
+      <table>
+        <caption>Known upstream terms attaching to constituent benchmark families.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Family</th>
+            <th scope="col">Terms</th>
+            <th scope="col">Consequence for reuse</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">LAB-Bench</th>
+            <td>CC-BY-SA-4.0, with an upstream do-not-train request</td>
+            <td>Share-alike applies. The upstream authors request that the material not be used for training; honour that request.</td>
+          </tr>
+          <tr>
+            <th scope="row">MaScQA</th>
+            <td>CC-BY-NC-SA-4.0</td>
+            <td><strong>Non-commercial only</strong>, and share-alike.</td>
+          </tr>
+          <tr>
+            <th scope="row">OmniMath2, JEEBench, SciBench</th>
+            <td>Upstream benchmark terms apply; see the dataset card</td>
+            <td>Not yet recorded on this page; must be stated before publication.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="table-note">
+      Because the non-commercial and do-not-train conditions attach to specific
+      subsets, users combining families must satisfy the strictest terms in the
+      combination they actually use.
+      
+    </p>
+  </div>
+</section>
+
+<!-- ============ CITATION ============ -->
+<section id="citation">
+  <div class="wrap">
+    <p class="eyebrow">Citation</p>
+    <h2>How to cite</h2>
+
+    <p class="lede">
+      The paper is under submission and has no DOI. The entry below is a
+      </p>
+
+    <pre><code>@misc{sciagenttrace2026,
+  title        = {SciAgentTrace: A Matched Cross-Domain Corpus of
+                  Scientific-Agent Protocol Executions},
+  author       = {Yang, Chih-Hsuan and Thakur, Rajeev},
+  year         = {2026},
+  note         = {Under submission to IEEE BigData 2026. No DOI assigned.},
+  howpublished = {\url{https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching}},
+}</code></pre>
+
+    <div class="callout callout-todo">
+      <h3>Placeholders in this block</h3>
+      <p>
+        Author list, canonical URL and DOI are all unresolved. Do not circulate
+        this citation, and do not substitute an author list from a different venue
+        &mdash; earlier related submissions used differing author lists, and the list
+        for this venue has not been settled.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LINKS ============ -->
+<section id="links">
+  <div class="wrap">
+    <p class="eyebrow">Links</p>
+    <h2>Resources</h2>
+
+    <ul class="linklist">
+      <li>
+        <a class="ll-title" href="https://huggingface.co/spaces/AgentsSci/scientific-agent-protocol-traces-site">Documentation Space</a>
+        <span class="ll-desc">huggingface.co/spaces/AgentsSci/scientific-agent-protocol-traces-site</span>
+      </li>
+      <li>
+        <a class="ll-title" href="https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching">Dataset</a>
+        <span class="ll-desc">huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching</span>
+      </li>
+      <li>
+        <a class="ll-title" href="https://github.com/ChihHsuan-Yang/IEEE2026_BigData_MAS-4-Science-Matching">Code</a>
+        <span class="ll-desc">github.com/ChihHsuan-Yang/IEEE2026_BigData_MAS-4-Science-Matching</span>
+      </li>
+      <li>
+        <span class="ll-title">Paper</span>
+        <span class="ll-desc">Under submission to IEEE BigData 2026.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      <strong>SciAgentTrace</strong> &mdash; a matched cross-domain corpus of
+      scientific-agent protocol executions. Under submission to IEEE BigData 2026.
+    </p>
+    <p>
+      Constituent benchmark families remain under their own upstream terms,
+      including non-commercial and share-alike conditions. See
+      <a href="#licensing">Licensing</a>.
+    </p>
+    <p>
+      Dataset and code are openly available; anonymous access verified.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
