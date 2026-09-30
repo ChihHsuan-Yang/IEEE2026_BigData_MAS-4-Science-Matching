@@ -17,9 +17,28 @@ The released corpus is on the Hugging Face Hub:
 Documentation site:
 **https://huggingface.co/spaces/AgentsSci/scientific-agent-protocol-traces-site**
 
-> **Paper status.** This release accompanies a paper under submission to
-> IEEE BigData 2026. The citation block below is a placeholder and will be
-> replaced with the proceedings reference if the paper is accepted.
+## Current status
+
+| | |
+|---|---|
+| Target venue | Nature Portfolio Scientific Data (Data Descriptor), in preparation |
+| Hardened release candidate | Frozen and internally validated; **not yet public** |
+| Public dataset | Hugging Face `AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching` — **superseded by the hardened candidate**, and it carries known defects |
+| Independent verifier run | **IN PROGRESS** — an additional Technical Validation layer, not a replacement for the canonical evaluator or the human audit |
+| Human validation | Instrument frozen; **not started** |
+| Endpoint provenance | **Not yet confirmed** with the facility |
+| Zenodo / DOI | **NOT YET CREATED** — no dataset DOI, no software DOI |
+| Manuscript | In preparation; not submitted |
+
+This repository contains the **code only**. The dataset lives on Hugging Face,
+and the internal project-management documentation is not public.
+
+> **Paper status.** This release accompanies a **Data Descriptor in
+> preparation for Nature Portfolio Scientific Data**. No manuscript has been
+> submitted to any venue, and no DOI exists for the dataset, the code or the
+> paper. An earlier IEEE BigData manuscript was drafted from the same corpus
+> and was **not submitted**. The citation block below is a placeholder and
+> will be replaced once an archival deposition exists.
 
 ---
 
@@ -280,14 +299,16 @@ before publishing any staged output.
 
 ## Citation
 
-Placeholder — to be replaced with the proceedings reference.
+**Placeholder — no DOI exists.** This entry is not yet citable and should not
+be circulated. It will be replaced once an archival deposition with a
+persistent identifier exists.
 
 ```bibtex
 @misc{yang2026sciagenttrace,
   title        = {SciAgentTrace: A Matched Multi-Agent Scientific Reasoning Trace Corpus},
   author       = {Yang, Chih-Hsuan and Thakur, Rajeev},
   year         = {2026},
-  note         = {Under submission to IEEE BigData 2026},
+  note         = {Data Descriptor in preparation for Scientific Data. Not submitted; no DOI assigned.},
   howpublished = {\url{https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching}}
 }
 ```
