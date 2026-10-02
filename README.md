@@ -11,27 +11,43 @@ corpus end to end:
    released tables (per-problem outcomes, token and call accounting, wall-time,
    and aggregate metrics).
 
-The released corpus is on the Hugging Face Hub:
-**https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching**
+## Start here
 
-Documentation site:
-**https://huggingface.co/spaces/AgentsSci/scientific-agent-protocol-traces-site**
+- **Dataset → [Hugging Face](https://huggingface.co/datasets/AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching)** — what you can download today
+- **Project site → [documentation](https://chihhsuan-yang.github.io/IEEE2026_BigData_MAS-4-Science-Matching/)**
+
+This repository holds the **code**. The dataset lives on Hugging Face, and the
+project's internal documentation is not public.
 
 ## Current status
 
+Four resource states exist and they are **not** the same object.
+
+| State | What it is | Status |
+|---|---|---|
+| **Public dataset** | Hugging Face `AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching` | **live, but superseded** — carries known defects fixed in the hardened candidate |
+| **Hardened candidate** | internally validated replacement | frozen and gate-clean; **not yet public** |
+| **Verifier-enriched candidate** | hardened candidate + independent-verifier verdicts | **in progress** |
+| **Archival release (Zenodo/DOI)** | citable version of record | **NOT YET CREATED** |
+
+> The public dataset is **not** identical to the hardened candidate. Do not
+> treat a validation claim about the candidate as a claim about what is
+> currently downloadable.
+
 | | |
 |---|---|
-| Target venue | Nature Portfolio Scientific Data (Data Descriptor), in preparation |
-| Hardened release candidate | Frozen and internally validated; **not yet public** |
-| Public dataset | Hugging Face `AgentsSci/IEEE2026_BigData_MAS-4-Science-Matching` — **superseded by the hardened candidate**, and it carries known defects |
-| Independent verifier run | **IN PROGRESS** — an additional Technical Validation layer, not a replacement for the canonical evaluator or the human audit |
-| Human validation | Instrument frozen; **not started** |
-| Endpoint provenance | **Not yet confirmed** with the facility |
-| Zenodo / DOI | **NOT YET CREATED** — no dataset DOI, no software DOI |
-| Manuscript | In preparation; not submitted |
+| Target venue | Nature Portfolio Scientific Data — **in preparation, not submitted** |
+| Independent verifier run | **in progress**, quota-paused; an additional validation layer, not a replacement for the canonical evaluator or the human audit |
+| Human validation | instrument frozen; **not started** |
+| Endpoint provenance | **not yet confirmed** with the facility |
+| Zenodo record / DOI | **NOT YET CREATED** — no dataset DOI, no software DOI |
 
-This repository contains the **code only**. The dataset lives on Hugging Face,
-and the internal project-management documentation is not public.
+## Does not exist yet
+
+Zenodo record · DOI · final archival release · human-audit results ·
+confirmed endpoint provenance · formal data citation · submission.
+
+Nothing above is "planned therefore done".
 
 > **Paper status.** This release accompanies a **Data Descriptor in
 > preparation for Nature Portfolio Scientific Data**. No manuscript has been
